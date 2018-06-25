@@ -45,6 +45,7 @@ $imginfo = '';
 //     echo 'save_change';
 //   }
 // }
+// session information is set when uploading the files
 if(isset($_POST)){
   if($_POST['operation'] == 'save_change'){
     $res = save_change();
@@ -93,6 +94,7 @@ function get_image(){
     $cmd1 = "python /home/mingzhe/project/scripts/convert_to_img.py ".$file_directory.$filename." ".strval($page)." 400 0 ".$page_directory.strval($page).".png"." 1";
     exec($cmd1,$res);
     $imginfo = getimagesize($page_directory.strval($page).".png");
+    // $txtinfo ...
 
     /***********************************************
     $cmd2 = "";

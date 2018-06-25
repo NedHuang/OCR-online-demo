@@ -17,14 +17,14 @@ declare variables
 /******************************************************************************
 set some dummy variables
 ******************************************************************************/
+  
+  //loading layer
+  // $('#loading').show().css('display','block');
+  // $('#loading').hide().css('display','none');
+  
 
-
-//var input_file_path = localStorage.getItem('input_file_path');
-// var input_file_path = '../files/hmz/uploaded/123';
-// var filename ='a.pdf';
-// localStorage.setItem('filename',filename);
-  var canvas = document.getElementById('editor_canvas');
-  var context = canvas.getContext('2d');
+var canvas = document.getElementById('editor_canvas');
+var context = canvas.getContext('2d');
 
 /******************************************************************************
 ******************************************************************************/
@@ -580,7 +580,7 @@ function get_image(){
       var errorcode = obj['errorcode'];
       showImg(img_url);
       reset_canvas();
-      resize(parseInt(imginfo['0']),parseInt(imginfo['1'])); 
+      resize_canvas_img(parseInt(imginfo['0']),parseInt(imginfo['1'])); 
     },
     error:function(err){
       alert('网络链接失败');
@@ -638,7 +638,16 @@ function showLastPage(){
 
 
 
+function showImg(url,w,h){
+  console.log('show img: '+ url + ' w: ' + w + ' h: '+h);
+  $('#input_img').attr('src',url);
+  // .css('max-width','1000px').css('margin','auto').css('width',);
+  // 显示图片则disable掉 跳转页码的按钮
 
+  // var w = $('#input_img')[0].naturalWidth;
+  // var h = $('#input_img')[0].naturalHeight;
+  // console.log('show img: '+ url + 'naturalWidth: ' + w +', naturalHeight: ' + h);
+}
 
 
 function showPageNumber(){

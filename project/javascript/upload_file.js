@@ -97,7 +97,7 @@ function uploadDoc() {
       //resize(parseInt(imginfo['0']),parseInt(imginfo['1']));
       showImg(img_url);
       reset_canvas();
-      resize(parseInt(imginfo['0']),parseInt(imginfo['1']));
+      resize_canvas_img(parseInt(imginfo['0']),parseInt(imginfo['1']));
       console.log('123123213');
 
     },
@@ -106,16 +106,24 @@ function uploadDoc() {
     }
   })
  }
- //set width to 1000
- function resize(w,h){
+
+
+
+ //set width to 1000 for img and canvas
+ function resize_canvas_img(w,h){
+  console.log('w2: ' +w2);
     var w1 = w;
     var h1 = h;
-    var w2 = 1000;
+    var w2 = parseInt($('#editor-container').width());
     var h2 = w2/w1*h1;
     $('#input_img').css('width',w2+'px').css('height',h2+'px');
     var c = document.getElementById('editor_canvas');
     c.setAttribute('width',w2+'');
     c.setAttribute('height',h2+'');
+
+    localStorage.setItem('canvas_width',w2);
+    localStorage.getItem('original_width',w1);
+
     console.log('resize to ' + w2 + 'px by ' + h2 +'px');
 
  }

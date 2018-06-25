@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>版面理解服务 - 数字出版技术国家重点实验室</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+  <!-- CSS Libs -->
+  <link rel="stylesheet" type="text/css" href="../lib/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../lib/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../lib/css/animate.min.css">
+  <link rel="stylesheet" type="text/css" href="../lib/css/bootstrap-switch.min.css">
+  <link rel="stylesheet" type="text/css" href="../lib/css/checkbox3.min.css">
+  <link rel="stylesheet" type="text/css" href="../lib/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="../lib/css/dataTables.bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../lib/css/select2.min.css">
+  <!-- CSS App -->
+  <link rel="stylesheet" type="text/css" href="../css/css/style.css">
+  <link rel="stylesheet" type="text/css" href="../css/css/themes/flat-green.css">
+</head>
+
+<body class="flat-green">
+  <div class="app-container">
+    <div class="row content-container">
+      <nav class="navbar navbar-default navbar-fixed-top navbar-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-expand-toggle">
+              <i class="fa fa-bars icon"></i>
+            </button>
+            <ol class="breadcrumb navbar-breadcrumb">
+              <li class="active"><i class="fa fa-globe"></i> 数字出版技术国家重点实验室</li>
+            </ol>
+            <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+              <i class="fa fa-th icon"></i>
+            </button>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+              <i class="fa fa-times icon"></i>
+            </button>
+            <li>
+              <a href="#">首页</a>
+            </li>
+            <li>
+                <a href="#">文档整理</a>
+            </li>
+            <li class="dropdown danger">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">其他服务</a>
+              <ul class="dropdown-menu danger  animated fadeInDown">
+                <li>
+                  <ul class="list-group notifications">
+                    <a href="#">
+                      <li class="list-group-item">
+                         <i class="fa fa-mortar-board"></i> 知识服务
+                      </li>
+                    </a>
+                    <a href="#">
+                      <li class="list-group-item">
+                         <i class="fa fa-pencil-square-o"></i> 机器写作
+                      </li>
+                    </a>
+                    <a href="http://www.founder.com/" target="blank">
+                      <li class="list-group-item message">
+                        方正集团
+                      </li>
+                    </a>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li class="dropdown profile">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">我的账户<span class="caret"></span></a>
+              <ul class="dropdown-menu animated fadeInDown">
+                <li class="profile-img">
+                  <img src="../assets/img/profile/picjumbo.com_HNCK4153_resize.jpg" class="profile-img">
+                </li>
+                <li>
+                  <div class="profile-info">
+                    <h4 class="username">Emily Hart</h4>
+                    <p>emily_hart@email.com</p>
+                    <div class="btn-group margin-bottom-2x" role="group">
+                      <button type="button" class="btn btn-default"><i class="fa fa-user"></i> Profile</button>
+                      <button type="button" class="btn btn-default"><i class="fa fa-sign-out"></i> Logout</button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="side-menu sidebar-inverse">
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="side-menu-container">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">
+                <div class="icon fa fa-newspaper-o"></div>
+                <div class="title">版面理解</div>
+              </a>
+              <button type="button" class="navbar-expand-toggle pull-right visible-xs">
+                <i class="fa fa-times icon"></i>
+              </button>
+            </div>
+            <ul class="nav navbar-nav" >
+              <li >
+                <a onclick = 'edit_mode()'>
+                  <span class="icon fa fa-folder-open"></span><span class="title">添加对象</span>
+                </a>
+              </li>
+              <li>
+                <a onclick = 'erase_mode()'>
+                  <span class="icon fa fa-trash"></span><span class="title">删除对象</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon fa fa-cogs"></span><span class="title">类别选择</span>
+                </a>
+              </li>
+              <li>
+                <a onclick = 'save_changes()'>
+                  <span class="icon fa fa-save"></span><span class="title">保存修改</span>
+                </a>
+              </li>
+              <li>
+                <a onclick = 'save_change_to_server()'>
+                  <span class="icon fa fa-save"></span><span class="title">上传结果</span>
+                </a>
+              </li>
+              <li>
+                <a onclick = ''>
+                  <span class="icon fa fa-external-link"></span><span class="title">导出结果</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+        </nav>
+      </div>
+      <!-- Main Content -->
+      <div class="container-fluid">
+        <div class="side-body" >
+          <div id = "editor-menu-container" class="row " style="background-color: rgb(232, 236, 230);margin: 0px;padding: 0px;">
+              <div class="row-fluid" >
+                <div class="  col-sm-2 col-md-3  col-lg-3 span3" >
+
+<!-- 
+                  <label for="file"class="btn btn-info">导入文件</label>
+                  <input id="file" onchange="loadFile(this.files[0])" type="file"style="display:none"> -->
+                  <form id="upload" enctype="multipart/form-data" method="post">
+                    <!-- <label for="file"class=" btn btn-info">导入文件</label>
+                    <input id="file" onchange="loadFile(this.files[0]);" type="file"style="display:none"> -->
+                  
+                    <!-- <label for="file" class="btn btn-info" id="showFileName">选择文件</label> -->
+                    <label for="file" class="btn btn-info">导入文件</label>
+                    <input  type="file" name="file" id="file" onchange="loadFile(this.files[0])" style="display:none">
+                    <!-- <input  type="button" value="提交" onclick="uploadDoc()" > -->
+                  </form>
+
+                  <button type="button" class="btn btn-primary">文件类型</button>
+                  <button type="button" class="btn btn-success" onclick = "uploadDoc()">开始识别</button>
+                </div>
+
+                <div class=" col-sm-7 col-md-7 col-lg-6 span5 ">
+                  <button type="button" class="btn btn-default" onclick='showFirstPage()'>首页</button>
+                  <button type="button" class="btn btn-default" onclick='showPrevPage()'>上一页</button>
+                  <button type="button" class="btn btn-default" onclick='showNextPage()'>下一页</button>
+                  <button type="button" class="btn btn-default" onclick='showLastPage()'>末页</button>
+                  <button type="button" class="btn btn-default" >页码</button>
+                  <label class="form-inline"><input type="number" class="form-control"  style="width: 70px" /></label>
+                  <button type="button" class="btn btn-default" onclick="select_page()">跳转</button>
+                </div>
+
+                <div class="  col-sm-3 col-md-2 col-lg-3 span4">
+                  <button type="button" class="btn btn-default"> <i class="fa fa-file-text-o"></i> </button>
+                  <span id="filename" style="vertical-align:middle" >未上传文件</span>
+                </div>
+              </div>
+
+          </div>
+          <div id = 'editor-container' class="container editor" style="background-color: #eeeeee; border :1px solid" >
+              <canvas id='editor_canvas' style = "position: absolute; margin-top: 50px; z-index: 1;" ></canvas>
+              <!-- <canvas id='dummy_canvas' style = "position: absolute; margin-top: 50px; z-index: 2" ></canvas> -->
+              <img id='input_img' style = "position: absolute; margin-top: 50px; z-index: 0">
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="app-footer">
+      <div class="wrapper">
+        <span class="pull-right">2.1 <a href="#"><i class="fa fa-long-arrow-up"></i></a></span> © 2015 Copyright. </a>
+      </div>
+    </footer>
+    <div>
+      <!-- Javascript Libs -->
+      <script type="text/javascript" src="../lib/js/jquery.min.js"></script>
+      <script type="text/javascript" src="../lib/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="../lib/js/Chart.min.js"></script>
+      <script type="text/javascript" src="../lib/js/bootstrap-switch.min.js"></script>
+      <script type="text/javascript" src="../lib/js/jquery.matchHeight-min.js"></script>
+      <script type="text/javascript" src="../lib/js/jquery.dataTables.min.js"></script>
+      <script type="text/javascript" src="../lib/js/dataTables.bootstrap.min.js"></script>
+      <script type="text/javascript" src="../lib/js/select2.full.min.js"></script>
+      <script type="text/javascript" src="../lib/js/ace/ace.js"></script>
+      <script type="text/javascript" src="../lib/js/ace/mode-html.js"></script>
+      <script type="text/javascript" src="../lib/js/ace/theme-github.js"></script>
+      <!-- Javascript -->
+      <script type="text/javascript" src="../javascript/app.js"></script>
+      <script type="text/javascript" src="../javascript/index.js"></script>
+      <script type="text/javascript" src="../javascript/jquery-3.3.1.js"></script>
+      
+      <script type="text/javascript" src ="../javascript/vue.js" ></script>
+      <script type="text/javascript" src ="../javascript/upload_file.js" ></script>
+      <script type="text/javascript" src ="../javascript/draw_min.js" ></script>
+      <script type="text/javascript" src ="../javascript/save_changes.js"></script>
+
+
+
+      <script type="text/javascript">
+      window.onload = resize_editor_region();
+      function resize_editor_region(){
+        var w = document.getElementById('editor-menu-container').clientWidth;
+        $('#editor-container').css('width',parseInt(w)-10);
+        //alert(w);
+        // var h = $(document.body).height();
+        // var o = $('#editor-menu-container').offset().top;
+        // var h2 = $('#editor-menu-container').height();
+        // $('#editor-container').css('height',h-o-h2);
+        }
+
+        $(window).resize(function () {          //当浏览器大小变化时
+         // alert($(window).height());          //浏览器时下窗口可视区域高度
+         // alert($(document).height());        //浏览器时下窗口文档的高度
+         // alert($(document.body).height());   //浏览器时下窗口文档body的高度
+         // alert($(document.body).outerHeight(true)); //浏览器时下窗口文档body的总高度 包括border padding margin
+         resize_editor_region();
+       });
+        $()
+      </script>
+
+</body>
+
+</html>
