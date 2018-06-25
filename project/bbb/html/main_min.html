@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="../javascript/vue.js"></script>
+  <script type="text/javascript" src ="../javascript/vue.js"></script>
+  <script type="text/javascript" src ="../javascript/jquery-3.3.1.js"></script>
+  <script type="text/javascript" src ="../javascript/draw_min.js" defer=true></script>
+  <title>
+  </title>
+  <!-- <link href="./animation_css/Icomoon/style.css" rel="stylesheet" type="text/css" /> -->
+<!--   <link href="../animation_css/main.css" rel="stylesheet" type="text/css" /> -->
+</head>
+<body>
+  <div id="1st">
+    <img id ='current_page_img' src="../assets/umn.png" style="position: absolute; z-index: 0; top : 100px">
+    <canvas id="canvas" height="500px" width="400px " style="position: absolute;z-index: 1;top : 100px"></canvas>
+    <!-- <canvas id="cav" height="500px" width="400px" style="background-color:#eeeeee;"></canvas> -->
+    <!-- <canvas id="canvas_edit_layer" height="400px" width="500px" style="position z-index: 1; opacity:0.3"></canvas> -->
+    <div id="buttons" style="background: #eeeeee; padding: 1rem">
+      <button onclick = "erase_mode()" >erase_mode</button>
+      <button onclick = "edit_mode()">edit_mode</button>
+      <button onclick = "undo()">undo</button>
+      <button onclick = "redo()">redo</button>
+      <button onclick = "change_category_to_formula()">change_category_to_formula</button>
+      <button onclick = "change_category_to_image()">change_category_to_image</button>
+      <button onclick = "change_category_to_table()">change_category_to_table</button>
+      <button onclick = "draw_all()">draw_all</button>
+      <button onclick = "print_returned()">print_returned</button>
+      <button onclick = "print_added()">print_added</button>
+      <button onclick = "print_deleted()">print_deleted</button>
+      <button onclick = "reset()">reset</button>
+      <button onclick = "confirm_change()">confirm_change</button>
+    </div>
+    <div id='container-editor'>
+      
+    </div>
+  </div>
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

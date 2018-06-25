@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+ 
+<!--   <script type="text/javascript" src ="../javascript/vue.js" defer=true></script>
+  <script type="text/javascript" src ="../javascript/jquery-3.3.1.js" defer=true></script>
+
+  <script type="text/javascript" src ="../javascript/upload_file.js" defer=true></script>
+  <script type="text/javascript" src ="../javascript/showPdf.js" defer=true></script>
+  <script type="text/javascript" src ="../javascript/draw_min.js" defer=true></script>
+  <script type="text/javascript" src ="../javascript/save_changes.js" defer=true></script> -->
+  <title>
+  </title>
+  <!-- <link href="./animation_css/Icomoon/style.css" rel="stylesheet" type="text/css" /> -->
+<!--   <link href="../animation_css/main.css" rel="stylesheet" type="text/css" /> -->
+</head>
+<body>
+
+  <div class="selector">
+    <div class="progress" id="upload-progress" hidden>
+      <div class="progress-bar" id="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+        0%
+      </div>
+    </div>
+    <div>
+      <form id="upload" enctype="multipart/form-data" method="post">
+          <span  id="showFileName">选择文件</span>
+          <input type="file" name="file" id="pic" onchange="">
+          <input  type="button" value="提交" onclick="uploadDoc()" >
+      </form>
+    </div>
+    <div class='page_menu_bar'>
+      <p  id="pages_indicator" >页数: 0 / 0</p>
+      <input type="number" id="myNumber" value="1" min="1">
+      <button  id="select_page_btn" class="change_page_button"  onclick="select_page()">跳转</button>
+      <button  id="showpdf_btn"     class="change_page_button"  onclick="showFirstPage()">第一页</button>
+      <button  id="prevpage_btn"    class="change_page_button"  onclick="showPrevPage()">上一页</button>
+      <button  id="nextpage_btn"    class="change_page_button"  onclick="showNextPage()">下一页</button>
+      <button  id="showpdf_btn"     class="change_page_button"  onclick="showLastPage()">最后一页</button>
+    </div>
+  </div>
+
+
+  <div class="editor">
+    <div style="position:relative;">
+      <!-- <img id ='current_page_img' src="../assets/umn.png" style="position: absolute; z-index: 0; top : 150px"> -->
+      <canvas id="canvas" height="500px" width="400px " style="position: absolute;z-index: 1;top : 150px"></canvas>
+    </div>
+    <div id="editor_buttons" style="background: #eeeeee; padding: 1rem">
+      <button onclick = "erase_mode()" >erase_mode</button>
+      <button onclick = "edit_mode()">edit_mode</button>
+      <button onclick = "undo()">undo</button>
+      <button onclick = "redo()">redo</button>
+      <button onclick = "change_category_to_formula()">change_category_to_formula</button>
+      <button onclick = "change_category_to_image()">change_category_to_image</button>
+      <button onclick = "change_category_to_table()">change_category_to_table</button>
+      <button onclick = "draw_all()">draw_all</button>
+      <button onclick = "print_returned()">print_returned</button>
+      <button onclick = "print_added()">print_added</button>
+      <button onclick = "print_deleted()">print_deleted</button>
+      <button onclick = "reset()">reset</button>
+      <button onclick = "save_change_to_server()">save_change_to_server</button>
+      <button onclick = "get_conveted_result()">get_conveted_result</button>
+      <button onclick = "get_image()">get_image</button>
+    </div>
+  </div>
+
+
+  <div >
+    <div style="width: 800px">
+      <canvas id='editor_canvas' style = "position: absolute; margin-top: 50px; z-index: 1" ></canvas>
+      <!-- <canvas id='dummy_canvas' style = "position: absolute; margin-top: 50px; z-index: 2" ></canvas> -->
+      <img id='input_img' style = "position: absolute; margin-top: 50px; z-index: 0">
+    </div>
+  </div>
+
+
+  <script type="text/javascript" src ="../javascript/vue.js" ></script>
+  <script type="text/javascript" src ="../javascript/jquery-3.3.1.js" ></script>
+  <script type="text/javascript" src ="../javascript/upload_file.js" ></script>
+  <script type="text/javascript" src ="../javascript/showPdf.js"></script>
+  <script type="text/javascript" src ="../javascript/draw_min.js" ></script>
+  <script type="text/javascript" src ="../javascript/save_changes.js"></script>
+</body>
+</html>

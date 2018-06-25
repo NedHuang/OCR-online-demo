@@ -1,0 +1,5 @@
+10 10 100 100 image returned
+50 50 140 140 image returned
+529 332 698 408 image added
+717 329 897 408 image added
+720 416 896 490 image added
