@@ -135,19 +135,8 @@ function get_image(){
   'imginfo'=>$imginfo,
   'txtinfo'=>$txtinfo,
   );
-
   return json_encode($arr);
-
-
-
 }
-
-
-
-
-
-
-
 
 
 
@@ -165,6 +154,7 @@ function get_data(){
   $page_directory = $file_directory.strval($page).'/';
   $source_file_dir = $page_directory.strval($page).'source.txt';
   $source_file_dir = '../files/a.txt';
+  $imginfo = getimagesize($page_directory.strval($page).".png");
   
   // dummy file path
   // $res = [];
@@ -184,6 +174,8 @@ function get_data(){
     'file' => $file,
     'errorcode' => $errorcode,
     'returned_boxes' => $s,
+    'imginfo' => $imginfo,
+
   );
   return (json_encode($arr));
 }
@@ -208,23 +200,52 @@ function save_change(){
   $returned_boxes = $_POST['returned_boxes'];
   $deleted_boxes = $_POST['deleted_boxes'];
   $file_directory = $_POST['file_directory'];
+  $canvas_width = $_POST['canvas_width'];
+  $original_width = $_POST['original_width'];
+  $ratio = floatval(floatval($original_width)/floatval($canvas_width));
   // $count = count($returned_boxes);
   $file = '';
   // go throgh all returned box, convert them into string and write to files
-  for ($i=0; $i <  count($returned_boxes); $i++) { 
-    $oneline = strval($returned_boxes[$i]['coordinates'][0])." ". strval($returned_boxes[$i]['coordinates'][1])." ".strval($returned_boxes[$i]['coordinates'][2])." ".strval($returned_boxes[$i]['coordinates'][3])." ".$returned_boxes[0]['category']." ". 'returned'."\n";
+
+
+  // for ($i=0; $i <  count($returned_boxes); $i++) { 
+  //   $oneline = strval($returned_boxes[$i]['coordinates'][0]*$ratio)." ". strval($returned_boxes[$i]['coordinates'][1]*$ratio)." ".strval($returned_boxes[$i]['coordinates'][2]*$ratio)." ".strval($returned_boxes[$i]['coordinates'][3]*$ratio)." ".$returned_boxes[$i]['category']." ". 'returned'."\n";
+  //   $file.=$oneline;
+  // }
+  // // repreat for the deleted boxs
+  // for ($i=0; $i <  count($deleted_boxes); $i++) { 
+  //   $oneline = strval($deleted_boxes[$i]['coordinates'][0]*$ratio)." ". strval($deleted_boxes[$i]['coordinates'][1]*$ratio)." ".strval($deleted_boxes[$i]['coordinates'][2]*$ratio)." ".strval($deleted_boxes[$i]['coordinates'][3]*$ratio)." ".$deleted_boxes[$i]['category']." ". 'deleted'."\n";
+  //   $file.=$oneline;
+  // }
+  // // again, for the added_boxes
+  // for ($i=0; $i <  count($added_boxes); $i++) { 
+  //   $oneline = strval($added_boxes[$i]['coordinates'][0]*$ratio)." ". strval($added_boxes[$i]['coordinates'][1]*$ratio)." ".strval($added_boxes[$i]['coordinates'][2]*$ratio)." ".strval($added_boxes[$i]['coordinates'][3]*$ratio)." ".$added_boxes[$i]['category']." ". 'added'."\n";
+  //   $file.=$oneline;
+  // }
+
+
+
+  for ($i=0; $i <  count($returned_boxes); $i++) {
+    $box = $returned_boxes[$i];
+    $coor = $box['coordinates'];
+    $oneline = strval(floatval($coor[0])*$ratio)." ".strval(floatval($coor[1])*$ratio)." ".strval(floatval($coor[2])*$ratio)." ".strval(floatval($coor[3])*$ratio)." ".$box['category']." ". 'returned'."\n";
     $file.=$oneline;
   }
   // repreat for the deleted boxs
   for ($i=0; $i <  count($deleted_boxes); $i++) { 
-    $oneline = strval($deleted_boxes[$i]['coordinates'][0])." ". strval($deleted_boxes[$i]['coordinates'][1])." ".strval($deleted_boxes[$i]['coordinates'][2])." ".strval($deleted_boxes[$i]['coordinates'][3])." ".$deleted_boxes[0]['category']." ". 'deleted'."\n";
+    $box = $deleted_boxes[$i];
+    $coor = $box['coordinates'];
+    $oneline = strval(floatval($coor[0])*$ratio)." ".strval(floatval($coor[1])*$ratio)." ".strval(floatval($coor[2])*$ratio)." ".strval(floatval($coor[3])*$ratio)." ".$box['category']." ". 'deleted'."\n";
     $file.=$oneline;
   }
   // again, for the added_boxes
   for ($i=0; $i <  count($added_boxes); $i++) { 
-    $oneline = strval($added_boxes[$i]['coordinates'][0])." ". strval($added_boxes[$i]['coordinates'][1])." ".strval($added_boxes[$i]['coordinates'][2])." ".strval($added_boxes[$i]['coordinates'][3])." ".$added_boxes[0]['category']." ". 'added'."\n";
+    $box = $added_boxes[$i];
+    $coor = $box['coordinates'];
+    $oneline = strval(floatval($coor[0])*$ratio)." ".strval(floatval($coor[1])*$ratio)." ".strval(floatval($coor[2])*$ratio)." ".strval(floatval($coor[3])*$ratio)." ".$box['category']." ". 'added'."\n";
     $file.=$oneline;
   }
+
 
 
   // save the file under file_directory/page/page.txt
@@ -254,54 +275,13 @@ function save_change(){
     'file' => $file,
     'errorcode' => $errorcode,
     'count' => strval($count),
+    'canvas_width' => $canvas_width,
+    'original_width' => $original_width,
+    'ratio' =>$ratio,
     // 'type' => strval(gettype($returned_boxes[0][0]))
   );
   return (json_encode($arr));
   // return "ccc";
 }
-
-
-
-// function generate_string($file,$box, $method){
-//   $coor = $box['coordinates'];
-//   $one_line = strval($coor[0]).'\t'.strval($coor[0]).'\t'.strval($coor[0]).'\t'.strval($coor[0]).'\t'.strval($box['category']).'\t'.strval($method).'\n';
-//   // $one_line = $method."\n";
-//   $file = $file.$one_line;
-// }
-
-// $arr = array(
-//   'status' => $status,
-// 	'filename'=>$filename,
-//   'file_directory' =>$file_directory,
-//   'username'=>$username,
-//   'user_guid'=>$user_guid,
-//   'page'=> strval($page),
-//   'total_page'=>strval($total_page),
-//   'extension'=>$extension,
-//   'page_directory'=>$page_directory,
-//   'img_url'=> $page_directory.$page.'.png',
-//   'cmd1' => $cmd1,
-//   'return_val' => $res,
-//   'errorcode' => $errorcode,
-//   'completed_page_array'=> $_SESSION['completed_page_array'],
-//   'imginfo'=>$imginfo,
-// );
-
-// echo json_encode($arr);
-
-
-
-
-// /***************************************************
-// functions
-// ***************************************************/
-
-
-
-
-
-
-
-
 
 ?>

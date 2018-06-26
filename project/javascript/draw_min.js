@@ -17,11 +17,11 @@ declare variables
 /******************************************************************************
 set some dummy variables
 ******************************************************************************/
-  
+
   //loading layer
   // $('#loading').show().css('display','block');
   // $('#loading').hide().css('display','none');
-  
+
 
 var canvas = document.getElementById('editor_canvas');
 var context = canvas.getContext('2d');
@@ -112,7 +112,7 @@ edit_mouseup = function(e){
     // no need to update index, because splice replaces the everything starts from the index
     index = index + 1;
     console.log('abandon');
-    
+
   }
   point_pair = [];
   draw_all();
@@ -120,39 +120,6 @@ edit_mouseup = function(e){
 }
 
 // mousedown event for erase_mode(deleting), mouseup后清除mousemove事件
-// this function generates an array of points and for each points, it calls delete_box()
-erase_mousedown = function(e){
-  context.strokeStyle = '#111111';
-  eraser_path = [];
-  x_start = e.offsetX;
-  y_start = e.offsetY;
-  context.beginPath();
-  eraser_path.push([x_start,y_start]);  
-  context.moveTo(x_start, y_start);
-
-}
-// 哈密顿距离 大于 20像素，则点的坐标array
-erase_onmousemove = function (e) {
-  var x_end = e.offsetX;
-  var y_end = e.offsetY;
-    context.strokeStyle = '#000000';
-  context.lineTo(x_end, y_end);
-  context.stroke();
-  if(Math.abs(x_start - x_end) + Math.abs(y_start - y_end) > 20){
-    x_start = x_end;
-    v_start = y_end;
-    eraser_path.push([x_start,y_start]);
-  }
-}
-
-erase_mouseup = function () {
-  delete_box(eraser_path);
-  console.log('1');
-  draw_all();
-  eraser_path = [];
-  context.closePath();
-  canvas.onmousemove = null;
-}
 
 
 //鼠标按下显示定位十字
@@ -161,16 +128,16 @@ function draw_auxiliary_line(x,y){
   context.strokeStyle = '#000000';
   context.beginPath();
   context.moveTo(x,y);
-  context.lineTo(x+15,y); 
+  context.lineTo(x+15,y);
   context.stroke();
   context.moveTo(x,y);
-  context.lineTo(x,y+15); 
+  context.lineTo(x,y+15);
   context.stroke();
   context.moveTo(x,y);
-  context.lineTo(x-15,y); 
+  context.lineTo(x-15,y);
   context.stroke();
   context.moveTo(x,y);
-  context.lineTo(x,y-15); 
+  context.lineTo(x,y-15);
   context.stroke();
   context.closePath();
 }
@@ -186,65 +153,88 @@ function draw_auxiliary_line(x,y){
 
 // call calculate_distance for each box and it returns true if the distance <= 10 pixel。
 // if the box is in added array, just delete, otherwise, delete and append it into deleted array
-function delete_box(path){
-  for(var i = 0; i < path.length; i++){
-    var x = path[i][0];
-    var y = path[i][1];
-    for(var j =0; j < added.length;j++){
-      var left = added[j].coordinates[0];
-      var top = added[j].coordinates[1];
-      var right = added[j].coordinates[2];
-      var bot = added[j].coordinates[3];
-      if(calculate_diatance(x,y,left,top,right,bot)){
-        var deleted_box = added[j];
-        added.splice(j,1);
-        var new_action = {'act':'delete_added_box', 'obj':deleted_box};
-        // update the index when delete a box
-        j = j - 1;
-        if(index == action_array.length - 1){
-          action_array.push(new_action);
-          index = index + 1;
-        }
-        else{
-          action_array.splice(index, action_array.length - index);
-          action_array.push(new_action);
-        }
+function delete_box(x,y){
+  for(var j =0; j < added.length;j++){
+    var left = added[j].coordinates[0];
+    var top = added[j].coordinates[1];
+    var right = added[j].coordinates[2];
+    var bot = added[j].coordinates[3];
+    if(calculate_diatance(x,y,left,top,right,bot)){
+      var deleted_box = added[j];
+      added.splice(j,1);
+      var new_action = {'act':'delete_added_box', 'obj':deleted_box};
+      // update the index when delete a box
+      j = j - 1;
+      if(index == action_array.length - 1){
+        action_array.push(new_action);
+        index = index + 1;
+      }
+      else{
+        action_array.splice(index, action_array.length - index);
+        action_array.push(new_action);
       }
     }
-    for(var j =0; j < returned.length;j++){
-      var top = returned[j].coordinates[0];
-      var left = returned[j].coordinates[1];
-      var right = returned[j].coordinates[2];
-      var bot = returned[j].coordinates[3];
-      if(calculate_diatance(x,y,left,top,right,bot)){
-        var deleted_box = returned[j];
-        returned.splice(j,1);
-        // record this false positive instance by pushing the box into 'deleted'array
-        deleted.push(deleted_box);
-        var new_action = {'act':'delete_returned_box', 'obj':deleted_box};
-        // update the index
-        j = j - 1;
-        if(index == action_array.length - 1){
-          action_array.push(new_action);
-          index = index + 1;
-        }
-        else{
-          action_array.splice(index, action_array.length - index);
-          action_array.push(new_action);
-        }
-      }      
+  }
+
+  for(var j =0; j < returned.length;j++){
+    var left = returned[j].coordinates[0];
+    var top = returned[j].coordinates[1];
+    var right = returned[j].coordinates[2];
+    var bot = returned[j].coordinates[3];
+    if(calculate_diatance(x,y,left,top,right,bot)){
+      var deleted_box = returned[j];
+      returned.splice(j,1);
+      // record this false positive instance by pushing the box into 'deleted'array
+      deleted.push(deleted_box);
+      var new_action = {'act':'delete_returned_box', 'obj':deleted_box};
+      // update the index
+      j = j - 1;
+      if(index == action_array.length - 1){
+        action_array.push(new_action);
+        index = index + 1;
+      }
+      else{
+        action_array.splice(index, action_array.length - index);
+        action_array.push(new_action);
+      }
     }
   }
 }
 
-
 // if the sum of distance from the point to a pair of edges is smaller than the height/width + 20 pixel, return true;
 function calculate_diatance(x,y,x_1,y_1,x_2,y_2){
-  if( (Math.abs(x-x_1)+Math.abs(x_2-x)<=Math.abs(x_1-x_2)+20) && (Math.abs(y-y_1)+Math.abs(y_2-y)<=Math.abs(y_1-y_2)+20) ){
+  // if( (Math.abs(x-x_1)+Math.abs(x_2-x)<=Math.abs(x_1-x_2)) && (Math.abs(y-y_1)+Math.abs(y_2-y)<=Math.abs(y_1-y_2)) ){
+  //   return true;
+  // }
+  if ((x-x_1)*(x-x_2) <= 0  && (y-y_1)*(y-y_2) <= 0){
+    console.log("delete box: " + parseInt(x_1) + ", " + parseInt(y_1） + ", " + parseInt(x_2） +', '+parseInt(y_2));
     return true;
   }
   return false;
 }
+
+// this function generates an array of points and for each points, it calls delete_box()
+erase_mousedown = function(e){
+  eraser_path = [];
+  x_start = e.offsetX;
+  y_start = e.offsetY;
+  console.log('click at: '+ x_start + ',' + y_start);
+  delete_box(x_start,y_start);
+
+}
+// 哈密顿距离 大于 20像素，则点的坐标array
+erase_onmousemove = function (e) {}
+
+erase_mouseup = function () {
+  console.log('erase_mouseup');
+  //delete_box(eraser_path);
+  draw_all();
+  canvas.onmousemove = null;
+}
+
+
+
+
 
 
 
@@ -290,11 +280,11 @@ function draw(input_box){
 
 
 function draw_all(){
-  console.log('re-draw ' + added.length +'items in added and ' + returned.length + ' items in returned, in index ' + index);
+  //console.log('re-draw ' + added.length +'items in added and ' + returned.length + ' items in returned, in index ' + index);
   context.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   for (var i = 0; i < added.length; i++) {
-    console.log('added.length '+added.length);
+    //console.log('added.length '+added.length);
     draw(added[i]);
   }
   for (var i = 0; i < returned.length; i++) {
@@ -367,7 +357,7 @@ function undo(){
       // returned.push(deleted.pop());
       draw_all();
     }
-  }  
+  }
 }
 
 function redo(){
@@ -413,6 +403,7 @@ function change_category_to_table(){
 
 //保存修改，将参数存入 backups
 function save_change(){
+  console.log('save_change');
   returned_backups = new Array();
   returned_backups = returned.concat();
   added_backups = new Array();
@@ -437,7 +428,7 @@ function print_returned(){
 // print all added box to console
 function print_added(){
   console.log('added_box:');
-  for(var i=0;i<added.length; i++){
+  for(var i=0;i<added_backups.length; i++){
     print_box(added[i]);
   }
 }
@@ -451,7 +442,7 @@ function print_deleted(){
 }
 
 function print_box(box){
-  console.log('category: '+box.category+'; coordinates: left: '+box.coordinates[0]+', top: '+box.coordinates[1]+', right: '+box.coordinates[2]+', bot: '+box.coordinates[3]);
+  console.log('category: '+box.category+'; coordinates: '+parseInt(box.coordinates[0])+', '+parseInt(box.coordinates[1])+', '+parseInt(box.coordinates[2])+', '+parseInt(box.coordinates[3]));
 }
 
   //重置所有改动, abandon all changes
@@ -467,7 +458,7 @@ function reset() {
 //将保存后的结果传回 server
 function save_change_to_server(){
   save_change();
-  var obj = 
+  var obj =
   {
     'operation': 'save_change',
     'filename': localStorage.getItem('filename'),
@@ -478,7 +469,10 @@ function save_change_to_server(){
     'returned_boxes': returned_backups,
     'added_boxes': added_backups,
     'deleted_boxes': deleted_backups,
+    'canvas_width' : localStorage.getItem('canvas_width'),
+    'original_width': localStorage.getItem('original_width'),
   }
+  console.log(JSON.stringify(obj));
   alert("operation: " + obj['operation']);
   $.ajax(
   {
@@ -499,9 +493,14 @@ function save_change_to_server(){
   })
 }
 
-function get_conveted_result(){
-  console.log('get_conveted_result');
-  var obj = 
+
+
+
+
+// 请求进行文档识别，并且传回txt文件内容，再绘制标识框
+function get_data(){
+  console.log('get_data');
+  var obj =
   {
     'operation': 'get_data',
     'filename': localStorage.getItem('filename'),
@@ -509,7 +508,9 @@ function get_conveted_result(){
     'page' : localStorage.getItem('page'),
     'extension': localStorage.getItem('extension'),
     'file_directory':localStorage.getItem('file_directory'),
-  }
+  };
+  //显示浮层
+  $('#loading').show().css('display','block');
   $.ajax(
   {
     url: '../php/convert.php',
@@ -521,7 +522,9 @@ function get_conveted_result(){
       console.log(res);
       obj = JSON.parse(res);
       var box_array = [];
-      // alert(obj['returned_boxes']);
+      var imginfo = obj['imginfo'];
+      var cav_width = parseInt($('#editor_canvas').width());
+      var ratio = parseFloat(cav_width) / parseFloat(imginfo[0]);
       var boxes = obj['returned_boxes'].split('\n');
       for(var i = 0; i < boxes.length; i++){
         var box = boxes[i].split(' ');
@@ -529,8 +532,8 @@ function get_conveted_result(){
         }
         else{
           // console.log(box);
-          var box_str = '{ "category" : ' +'"'+ box[4]+'"' +', "coordinates" : [' + parseInt(box[0]) +', '
-          +parseInt(box[1]) +', '+ parseInt(box[2]) +', ' +parseInt(box[3]) +']}';
+          var box_str = '{ "category" : ' +'"'+ box[4]+'"' +', "coordinates" : [' + parseFloat(box[0])*ratio +', '
+          +parseFloat(box[1])*ratio +', '+ parseFloat(box[2])*ratio +', ' +parseFloat(box[3])*ratio +']}';
           // console.log('yes '+box_str);
           var b = JSON.parse(box_str);
           console.log(b);
@@ -543,18 +546,24 @@ function get_conveted_result(){
       returned = returned_backups.concat();
       added = added_backups.concat();
       deleted = deleted_backups.concat();
+      draw_all();
+      //隐藏浮层
+      $('#loading').hide().css('display','none');
     },
     error:function(err){
+      //隐藏浮层
+      $('#loading').hide().css('display','none');
       alert('网络链接失败');
     }
   })
 }
 
+
+//请求服务器将PDF转换成png,然后执行get_data()
+
 function get_image(){
   console.log('get_image');
-
-  //localStorage.setItem('completed_page_array', localStorage.getItem('completed_page_array').push(page));
-    var obj = 
+  var obj =
   {
     'operation': 'get_image',
     'filename': localStorage.getItem('filename'),
@@ -562,7 +571,8 @@ function get_image(){
     'page' : localStorage.getItem('page'),
     'extension': localStorage.getItem('extension'),
     'file_directory':localStorage.getItem('file_directory'),
-  }
+  };
+  $('#upload-progress').hide();
   $.ajax(
   {
     url: '../php/convert.php',
@@ -580,15 +590,20 @@ function get_image(){
       var errorcode = obj['errorcode'];
       showImg(img_url);
       reset_canvas();
-      resize_canvas_img(parseInt(imginfo['0']),parseInt(imginfo['1'])); 
+      resize_canvas_img(parseInt(imginfo['0']),parseInt(imginfo['1']));
+      get_data();
+      $('#loading').hide().css('display','none');
     },
     error:function(err){
+      $('#loading').hide().css('display','none');
       alert('网络链接失败');
     }
   })
 }
 
-function showNextPage(){ 
+
+// 切换到下一页
+function showNextPage(){
   page = parseInt(localStorage.getItem('page'));
   total_page = parseInt(localStorage.getItem('total_page'));
   console.log( + page + "out of" + total_page);
@@ -602,7 +617,7 @@ function showNextPage(){
   }
 }
 
-
+//切换到第一页
 function showPrevPage(){
   page = parseInt(localStorage.getItem('page'));
   total_page = parseInt(localStorage.getItem('total_page'));
@@ -617,6 +632,8 @@ function showPrevPage(){
   }
 }
 
+
+//切换到第一页
 function showFirstPage(){
   page = parseInt(localStorage.getItem('page'));
   total_page = parseInt(localStorage.getItem('total_page'));
@@ -626,6 +643,7 @@ function showFirstPage(){
   get_image();
 }
 
+//切换到最后一页
 function showLastPage(){
   page = parseInt(localStorage.getItem('page'));
   total_page = parseInt(localStorage.getItem('total_page'));
@@ -637,9 +655,9 @@ function showLastPage(){
 
 
 
-
-function showImg(url,w,h){
-  console.log('show img: '+ url + ' w: ' + w + ' h: '+h);
+//显示图片
+function showImg(url){
+  console.log('show img: '+ url );
   $('#input_img').attr('src',url);
   // .css('max-width','1000px').css('margin','auto').css('width',);
   // 显示图片则disable掉 跳转页码的按钮
@@ -650,35 +668,28 @@ function showImg(url,w,h){
 }
 
 
+//更新页码
 function showPageNumber(){
   $('#pages_indicator').empty();
   $('#pages_indicator').html("页数: " + page + " / " + total_page);
   document.getElementById('myNumber').value = page;
-  document.getElementById('myNumber').max = total_page+"";
-
+  document.getElementById('myNumber').max = parseInt(localStorage.getItem('total_page'));
 }
 
 
 
-
+//选择页码
 function select_page() {
   var selected_page = document.getElementById("myNumber").value;
+  total_page = localStorage.getItem('total_page');
+  console.log('selected_page: '  + selected_page);
+  total_page = parseInt(localStorage.getItem('total_page'));
+  page = selected_page;
+  localStorage.setItem('page',page);
   if(selected_page <=0 || selected_page > total_page){
     alert("请输入有效的页码");
   }
   page = Number(selected_page);
-  convert_request(localStorage.getItem('input_full_path'),selected_page);
+  get_image();
   console.log("jump to page: " + page);
 }
-
-
-
-
-
-
-
-
-// function showImg(url,w,h){
-//   console.log('show img: '+ url + ' w: ' + w + ' h: '+h);
-//   $('#input_img').attr('src',url);
-// }

@@ -85,15 +85,15 @@ if(strtolower($extension) == 'pdf'){
 }
 
 // image was saved under file_directory
-if(in_array(strtolower($extension), array('bmp', 'png', 'jpeg','jpg'))){
-  $page_directory = 'single-paged file';
-  $img_url = $file_directory."/".$filename;
-  $imginfo = getimagesize($file_directory."/".$filename);
-  /***********************************************
-  $cmd2 = "";
-  exec($cmd2,$res2);
-  ***********************************************/
-}
+// if(in_array(strtolower($extension), array('bmp', 'png', 'jpeg','jpg'))){
+//   $page_directory = 'single-paged file';
+//   $img_url = $file_directory."/".$filename;
+//   $imginfo = getimagesize($file_directory."/".$filename);
+//   /***********************************************
+//   $cmd2 = "";
+//   exec($cmd2,$res2);
+//   ***********************************************/
+// }
 
 
 $arr = array(

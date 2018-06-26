@@ -4,12 +4,16 @@ var username = '';
 var filename = '';
 var multipage_extension = new Array('gif','pdf','tif','tiff');
 var singlepage_extension = new Array('bmp','jpeg','jpg','png');
-// 
 
 
+
+// 上传图像
 function uploadDoc() {
+  console.log('uploading...');
   var form = document.getElementById('upload');
-    formData = new FormData(form);
+  formData = new FormData(form);
+//显示表示等待状态的浮层
+  $('#loading').show().css('display','block');
   $.ajax({
     url:'../php/upload_file.php',
     type:'post',
@@ -35,7 +39,6 @@ function uploadDoc() {
       $('#upload-progress').hide();
       alert(res);
       console.log('this is returned to after uploading a file');
-      
       var obj = res;
       obj = JSON.parse(res);
       // var output = obj['output'];
@@ -73,17 +76,18 @@ function uploadDoc() {
       localStorage.setItem('total_page', total_page);
       localStorage.setItem('extension:', file_extension);
       localStorage.setItem('file_directory', file_directory);
-      localStorage.setItem('page_directory', page_directory);      
+      localStorage.setItem('page_directory', page_directory);
       localStorage.setItem('completed_page_array', completed_page_array);
       localStorage.setItem('img_url',img_url);
-      localStorage.setItem('imginfo',imginfo); 
+      localStorage.setItem('imginfo',imginfo);
+      localStorage.setItem('original_width',parseInt(imginfo['0']));
 
       console.log('filename: ' + obj['filename']);
       console.log('username: ' + obj['username']);
       console.log('user_guid: ' + obj['user_guid']);
       console.log('page: ' + obj['page']);
-      console.log('total_page: ' + total_page);
-       console.log('total_page',localStorage.getItem('total_page'));
+      console.log('total_page: ' + parseInt(total_page));
+      console.log('total_page',localStorage.getItem('total_page'));
       console.log('extension: ' + obj['extension']);
       console.log('file_directory: ' + obj['file_directory']);
       console.log('page_directory: ' + obj['page_directory']);
@@ -96,13 +100,17 @@ function uploadDoc() {
       // alert('finish');
       //resize(parseInt(imginfo['0']),parseInt(imginfo['1']));
       showImg(img_url);
-      reset_canvas();
+      reset();
       resize_canvas_img(parseInt(imginfo['0']),parseInt(imginfo['1']));
-      console.log('123123213');
+      //隐藏表等待状态的浮层
+      get_data();
+      $('#loading').hide().css('display','none');
 
     },
     error:function(err){
       alert('网络连接失败,稍后重试',err);
+      //隐藏表等待状态的浮层
+      $('#loading').hide().css('display','none');
     }
   })
  }
@@ -127,7 +135,7 @@ function uploadDoc() {
     console.log('resize to ' + w2 + 'px by ' + h2 +'px');
 
  }
- 
+
 
 function logout(){
   // alert('点击确定，在3秒后登出');
@@ -148,6 +156,3 @@ function change(){
 function convert(){
   window.location.href='../php/convert.html';
 }
-
-
-
